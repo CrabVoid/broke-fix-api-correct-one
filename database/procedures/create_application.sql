@@ -12,7 +12,8 @@ CREATE PROCEDURE create_application(
     IN p_internship_id INT,
     IN p_motivation_letter TEXT,
     OUT p_message VARCHAR(255),
-    OUT p_application_id INT
+    OUT p_application_id INT,
+    OUT p_success BOOLEAN
 )
 proc_body: BEGIN
     -- Declare variables for validation
@@ -21,6 +22,7 @@ proc_body: BEGIN
     DECLARE v_existing_application INT DEFAULT NULL;
 
     -- Start transaction
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -28,6 +30,7 @@ proc_body: BEGIN
         SET p_message = 'Database error occurred';
         SET p_application_id = NULL;
     END;
+
 
     START TRANSACTION;
 
