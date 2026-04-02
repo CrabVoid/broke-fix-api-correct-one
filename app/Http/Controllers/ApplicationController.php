@@ -47,9 +47,10 @@ class ApplicationController extends Controller
                     'reason' => $result['message'],
                     'user_id' => $validated['user_id'],
                     'internship_id' => $validated['internship_id'],
+                    'motivation_letter' => $validated['motivation_letter'] ?? null,
                 ]);
 
-                return response()->json(['message' => $result['text']], $result['status']);
+                return response()->json(['message' => $result['message']], $result['status']);
             }
 
             ActivityLogger::created($result['application'], [
@@ -104,6 +105,7 @@ class ApplicationController extends Controller
                 'reason' => $statusResult[0]->message,
                 'user_id' => $validated['user_id'],
                 'internship_id' => $validated['internship_id'],
+                'motivation_letter' => $validated['motivation_letter'] ?? null,
                 'method' => 'stored_procedure',
             ]);
 
