@@ -24,9 +24,9 @@ class Application extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
-    public function internship(): HasMany
+    public function internship(): BelongsTo
     {
-        return $this->hasMany(Internship::class, 'internships_id');
+        return $this->belongsTo(Internship::class, 'internships_id');
     }
 
     public function evaluations(): HasMany

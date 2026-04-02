@@ -10,6 +10,11 @@ use Illuminate\Validation\ValidationException;
 
 class ApplicationController extends Controller
 {
+
+    public function index() {
+        return Application::all();
+    }
+
     public function store(Request $request)
     {
         try {
@@ -31,13 +36,13 @@ class ApplicationController extends Controller
         }
 
         return DB::transaction(function () use ($validated) {
-            $result = Application::createWithInfo(
+            $result = Application::createForUser(
                 $validated['user_id'],
                 $validated['internship_id'],
                 $validated['motivation_letter'] ?? null
             );
 
-            if ($result['success']) {
+            if (!$result['success']) {
                 ActivityLogger::log('application_create_failed', null, [
                     'reason' => $result['message'],
                     'user_id' => $validated['user_id'],
@@ -92,6 +97,7 @@ class ApplicationController extends Controller
         $statusResult = DB::select('SELECT @success as success, @message as message, @app_id as application_id');
 
         $success = (bool) $statusResult[0]->success;
+        $applicationId = $statusResult[0]->application_id;
 
         if (!$success) {
             ActivityLogger::log('application_create_failed', null, [
@@ -106,7 +112,7 @@ class ApplicationController extends Controller
             ], 422);
         }
 
-        $application = Application::find();
+        $application = Application::find($applicationId);
 
         ActivityLogger::created($application, [
             'user_id' => $validated['user_id'],

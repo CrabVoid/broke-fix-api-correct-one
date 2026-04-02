@@ -9,11 +9,12 @@
 DROP PROCEDURE IF EXISTS create_application;
 
 CREATE PROCEDURE create_application(
+    IN p_user_id INT,
     IN p_internship_id INT,
     IN p_motivation_letter TEXT,
+    OUT p_success BOOLEAN,
     OUT p_message VARCHAR(255),
-    OUT p_application_id INT,
-    OUT p_success BOOLEAN
+    OUT p_application_id INT
 )
 proc_body: BEGIN
     -- Declare variables for validation

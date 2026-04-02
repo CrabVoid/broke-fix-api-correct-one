@@ -8,5 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/applications', [ApplicationController::class, 'store']);
-Route::get('/applications/procedure', [ApplicationController::class, 'storeWithProcedure']);
+Route::get('/applications', [ApplicationController::class, 'index']);
+Route::post('/applications', [ApplicationController::class, 'store']);
+Route::post('/applications/procedure', [ApplicationController::class, 'storeWithProcedure']);
